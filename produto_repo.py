@@ -31,7 +31,7 @@ def atualizar_produto(produto: Produto) -> bool:
     conexao.close()
     return (cursor.rowcount > 0)
 
-def excluir_produto(id):
+def excluir_produto(id: int) -> bool:
     """Exclui um produto do banco de dados pelo ID."""
     conexao = obter_conexao()
     cursor = conexao.cursor()
