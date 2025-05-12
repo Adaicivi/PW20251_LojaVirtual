@@ -1,6 +1,6 @@
-from database import obter_conexao
-from produto_sql import *
-from produto import Produto
+from data.database import obter_conexao
+from sql.produto_sql import *
+from models.produto import Produto
 
 def criar_tabela():
     """Cria a tabela Produto se ela não existir."""
