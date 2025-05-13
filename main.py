@@ -3,9 +3,11 @@ from fastapi import FastAPI, Request
 from fastapi.templating import Jinja2Templates
 from babel.numbers import format_currency
 
-from repo.produto_repo import criar_tabela, obter_produto_por_id, obter_produtos_por_pagina
+from repo.cliente_repo import criar_tabela_clientes, obter_clientes_por_pagina
+from repo.produto_repo import criar_tabela_produtos, obter_produto_por_id, obter_produtos_por_pagina
 
-criar_tabela()
+criar_tabela_produtos()
+criar_tabela_clientes()
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")

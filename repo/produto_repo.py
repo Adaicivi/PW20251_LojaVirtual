@@ -2,7 +2,7 @@ from data.database import obter_conexao
 from sql.produto_sql import *
 from models.produto import Produto
 
-def criar_tabela():
+def criar_tabela_produtos():
     """Cria a tabela Produto se ela não existir."""
     conexao = obter_conexao()
     cursor = conexao.cursor()
