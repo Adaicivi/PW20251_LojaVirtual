@@ -1,25 +1,17 @@
 {% extends "base.html" %}
-{% set titulo_pagina = "Detalhes do Produto <b>" + produto.nome + "</b>" %}
+{% set titulo_pagina = "Detalhes de Produto <b>" + produto.nome + "</b>"%}
 {% block conteudo %}
-<div class="row g-3 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-6 align-items-stretch">
-            {% for p in produtos %}
-            <div class="col">
-                <div class="card h-100">
-                    <img src="{{p.imagem}}" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h6 class="card-title text-center duas-linhas mb-0">{{p.nome}}</h6>
-                        <p class="card-text text-center max-tres-linhas m-0">
-                            {{p.descricao}}
-                        </p>
-                        <p class="card-text text-center">
-                            <strong>{{p.preco|format_currency_br}}</strong>
-                        </p>
-                    </div>
-                    <div class="card-footer p-3">
-                        <a href="/produtos/{{p.id}}" class="btn btn-danger w-100">Ver Detalhes</a>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
+<div class="row">
+    <div class="col-md-3 mb-3">
+        <img src="{{produto.imagem}}" class="img-thumbnail rounded" alt="{{produto.nome}}">
+    </div>
+    <div class="col-md-9">
+        <h2>{{produto.nome}}</h2>
+        <p>{{produto.descricao}}</p>
+        <p>
+            <strong class="text-danger fs-3">{{produto.preco|format_currency_br}}</strong>
+        </p>
+        <a href="/produtos" class="btn btn-primary">Voltar para Produtos</a>
+    </div>
 </div>
 {% endblock %}
