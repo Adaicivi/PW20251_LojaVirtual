@@ -60,16 +60,20 @@ def obter_cliente_por_id(id: int) -> Cliente:
 
 def obter_clientes_por_pagina(limite: int, offset: int) -> list[Cliente]:
     """Obtém uma lista de clientes com paginação."""
-    conexao = obter_conexao()
-    cursor = conexao.cursor()
-    cursor.execute(GET_CLIENTES_BY_PAGE, (limite, offset))
-    resultados = cursor.fetchall()
-    conexao.close()
-    return [Cliente(
-        id=resultado[0],
-        nome=resultado[1],
-        cpf=resultado[2],
-        telefone=resultado[3],
-        email=resultado[4],
-        data_nascimento=datetime.strptime(resultado[5], "%Y-%m-%d").date()
-    ) for resultado in resultados]
+    try:
+        conexao = obter_conexao()
+        cursor = conexao.cursor()
+        cursor.execute(GET_CLIENTES_BY_PAGE, (limite, offset))
+        resultados = cursor.fetchall()
+        conexao.close()
+        return [Cliente(
+            id=resultado[0],
+            nome=resultado[1],
+            cpf=resultado[2],
+            telefone=resultado[3],
+            email=resultado[4],
+            data_nascimento=datetime.strptime(resultado[5], "%Y-%m-%d").date()
+        ) for resultado in resultados]
+    except Exception as e:
+        print(f"Erro ao obter clientes: {e}")
+        return []
