@@ -15,7 +15,7 @@ def inserir_endereco(endereco: Endereco) -> Endereco:
     conexao = obter_conexao()
     cursor = conexao.cursor()
     cursor.execute(INSERT_ENDERECO, 
-        (endereco.nome, endereco.logradouro, endereco.numero, endereco.complemento, endereco.bairro, endereco.cidade, endereco.uf, endereco.cep))
+        (endereco.logradouro, endereco.numero, endereco.complemento, endereco.bairro, endereco.cidade, endereco.uf, endereco.cep))
     endereco.id = cursor.lastrowid
     conexao.commit()
     conexao.close()
@@ -26,7 +26,7 @@ def atualizar_endereco(endereco: Endereco) -> bool:
     conexao = obter_conexao()
     cursor = conexao.cursor()
     cursor.execute(UPDATE_ENDERECO, 
-        (endereco.nome, endereco.logradouro, endereco.numero, endereco.complemento, endereco.bairro, endereco.cidade, endereco.uf, endereco.cep,endereco.id))
+        (endereco.logradouro, endereco.numero, endereco.complemento, endereco.bairro, endereco.cidade, endereco.uf, endereco.cep,endereco.id))
     conexao.commit()
     conexao.close()
     return (cursor.rowcount > 0)
@@ -50,14 +50,13 @@ def obter_endereco_por_id(id: int) -> Endereco:
     if resultado:
         return Endereco(
             id=resultado[0],
-            nome=resultado[1]
-            logradouro=resultado[2],
-            numero=resultado[3],
-            complemento=resultado[4],
-            bairro=resultado[5],
-            cidade=resultado[6],
-            uf=resultado[7],
-            cep=resultado[8]
+            logradouro=resultado[1],
+            numero=resultado[2],
+            complemento=resultado[3],
+            bairro=resultado[4],
+            cidade=resultado[5],
+            uf=resultado[6],
+            cep=resultado[7]
         )
     return None
 
@@ -70,12 +69,11 @@ def obter_enderecos_por_pagina(limite: int, offset: int) -> list[Endereco]:
     conexao.close()
     return [Endereco(
         id=resultado[0],
-        nome=resultado[1],
-        logradouro=resultado[2],
-        numero=resultado[3],
-        complemento=resultado[4],
-        bairro=resultado[5],
-        cidade=resultado[6],
-        uf=resultado[7],
-        cep=resultado[8]
+        logradouro=resultado[1],
+        numero=resultado[2],
+        complemento=resultado[3],
+        bairro=resultado[4],
+        cidade=resultado[5],
+        uf=resultado[6],
+        cep=resultado[7]
     ) for resultado in resultados]
