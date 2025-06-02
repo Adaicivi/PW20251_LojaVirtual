@@ -1,0 +1,18 @@
+{%extends "base.html" %}
+{% set titulo_pagina = "Identifique-se" %}
+{% block conteudo %}
+
+<form action="/login" method="post">
+    <div class="form-floating mb-3">
+        <input type="email" class="form-control" id="email" name="email" placeholder="E-mail" required>
+        <label for="email">E-mail</label> 
+    </div>
+    <div class="form-floating mb-3">
+        <input type="password" class="form-control" id="senha" name="senha" placeholder="Senha" required>
+        <label for="senha">Senha</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Entrar</button>
+</form>
+
+
+{% endblock %}
