@@ -5,11 +5,13 @@ from fastapi.templating import Jinja2Templates
 from babel.numbers import format_currency
 from starlette.middleware.sessions import SessionMiddleware
 
+from models.usuario import Usuario
+from repo import usuario_repo
 from repo.categoria_repo import criar_tabela_categorias, obter_categorias_por_pagina
 from repo.usuario_repo import criar_tabela_usuarios, obter_usuarios_por_pagina
 from repo.endereco_repo import criar_tabela_enderecos, obter_enderecos_por_pagina
 from repo.produto_repo import criar_tabela_produtos, obter_produto_por_id, obter_produtos_por_pagina
-from util.auth import SECRET_KEY, autenticar_usuario
+from util.auth import SECRET_KEY, autenticar_usuario, hash_senha
 
 criar_tabela_produtos()
 criar_tabela_usuarios()
@@ -60,6 +62,38 @@ def read_enderecos(request: Request):
     enderecos = obter_enderecos_por_pagina(1, 12)
     response = templates.TemplateResponse("enderecos.html", {"request": request, "enderecos": enderecos})
     return response
+
+@app.get("/cadastrar")
+def read_cadastrar(request: Request):
+    return templates.TemplateResponse("cadastrar.html", {"request": request})
+
+@app.post("/cadastrar")
+async def cadastrar_usuario(
+    request: Request,
+    nome: str = Form(),
+    cpf: str = Form(),
+    email: str = Form(),
+    telefone: str = Form(),
+    data_nascimento: str = Form(),
+    senha: str = Form(),
+    conf_senha: str = Form()
+):
+    if senha != conf_senha:
+        raise HTTPException(status_code=400, detail="As senhas não conferem")
+    usuario = Usuario(
+        id=0,
+        nome=nome,
+        cpf=cpf,
+        telefone=telefone,
+        email=email,
+        data_nascimento=data_nascimento,
+        senha_hash=hash_senha(senha),
+        tipo=0
+    )
+    usuario = usuario_repo.inserir_usuario(usuario)
+    if not usuario:
+        raise HTTPException(status_code=400, detail="Erro ao cadastrar usuário")
+    return RedirectResponse(url="/login", status_code=303)
 
 @app.get("/login")
 def read_login(request: Request):

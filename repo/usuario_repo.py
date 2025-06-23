@@ -14,7 +14,7 @@ def inserir_usuario(usuario: Usuario) -> Usuario:
     with obter_conexao() as conexao:
         cursor = conexao.cursor()
         cursor.execute(INSERT_USUARIO, 
-            (usuario.nome, usuario.cpf, usuario.telefone, usuario.email, usuario.data_nascimento))
+            (usuario.nome, usuario.cpf, usuario.telefone, usuario.email, usuario.data_nascimento, usuario.senha_hash))
         usuario.id = cursor.lastrowid
         return usuario
 

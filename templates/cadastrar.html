@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% set titulo_pagina = "Cadastre-se" %}
+{% block conteudo %}
+<form method="post">
+    <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome" required>
+        <label for="nome">Nome</label>
+    </div>
+    <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="cpf" name="cpf" placeholder="CPF" required>
+        <label for="cpf">CPF</label>
+    </div>
+    <div class="form-floating mb-3">
+        <input type="email" class="form-control" id="email" name="email" placeholder="E-mail" required>
+        <label for="email">E-mail</label>
+    </div>
+    <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="telefone" name="telefone" placeholder="Telefone" required>
+        <label for="telefone">Telefone</label>
+    </div>
+    <div class="form-floating mb-3">
+        <input type="date" class="form-control" id="data_nascimento" name="data_nascimento" placeholder="Data de Nascimento" required>
+        <label for="data_nascimento">Data de Nascimento</label>
+    </div>
+    <div class="form-floating mb-3">
+        <input type="password" class="form-control" id="senha" name="senha" placeholder="Senha" required>
+        <label for="senha">Senha</label>
+    </div>
+    <div class="form-floating mb-3">
+        <input type="password" class="form-control" id="conf_senha" name="conf_senha" placeholder="Confirme a Senha" required>
+        <label for="conf_senha">Confirme a Senha</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Cadastrar</button>
+</form>
+{% endblock %}
