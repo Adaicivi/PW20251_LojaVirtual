@@ -10,6 +10,7 @@
             <th>E-mail</th>
             <th>Telefone</th>
             <th>Data Nasc.</th>
+            <th class="text-center">Ações</th>
         </tr>
     </thead>
     <tbody>
@@ -21,6 +22,17 @@
             <td>{{ usuario.email }}</td>
             <td>{{ usuario.telefone }}</td>
             <td>{{ usuario.data_nascimento.strftime('%d/%m/%Y') }}</td>
+            <td class="text-center">
+                {% if usuario.tipo == 0 %}
+                <a href="/usuarios/promover/{{usuario.id}}" class="btn btn-primary" title="Promover para Administrador">
+                    <i class="bi-arrow-up"></i>
+                </a>
+                {% else %}
+                <a href="/usuarios/rebaixar/{{usuario.id}}" class="btn btn-danger" title="Rebaixar para Usuário Comum">
+                    <i class="bi-arrow-down"></i>
+                </a>
+                {% endif %}
+            </td>
         </tr>
         {% endfor %}
     </tbody>

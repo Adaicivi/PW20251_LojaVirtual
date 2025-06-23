@@ -41,10 +41,12 @@
                 <div class="collapse navbar-collapse justify-content-between" id="mainMenu">
                     <div class="navbar-nav">
                         <a class="nav-link active" href="/">Home</a>
+                        {% if usuario and usuario.tipo == "admin" %}
                         <a class="nav-link" href="/produtos">Produtos</a>
                         <a class="nav-link" href="/categorias">Categorias</a>
                         <a class="nav-link" href="/usuarios">Usuários</a>
                         <a class="nav-link" href="/enderecos">Endereços</a>
+                        {% endif %}
                         <a class="nav-link" href="/sobre">Sobre</a>
                     </div>
                     <div class="navbar-nav">
