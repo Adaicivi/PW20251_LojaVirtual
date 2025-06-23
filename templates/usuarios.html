@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% set titulo_pagina = "Clientes" %}
+{% set titulo_pagina = "Usuários" %}
 {% block conteudo %}
 <table class="table table-striped align-middle">
     <thead>
@@ -13,14 +13,14 @@
         </tr>
     </thead>
     <tbody>
-        {% for cliente in clientes %}
+        {% for usuario in usuarios %}
         <tr>
-            <td>{{ cliente.id }}</td>
-            <td>{{ cliente.nome }}</td>
-            <td>{{ cliente.cpf }}</td>
-            <td>{{ cliente.email }}</td>
-            <td>{{ cliente.telefone }}</td>
-            <td>{{ cliente.data_nascimento.strftime('%d/%m/%Y') }}</td>
+            <td>{{ usuario.id }}</td>
+            <td>{{ usuario.nome }}</td>
+            <td>{{ usuario.cpf }}</td>
+            <td>{{ usuario.email }}</td>
+            <td>{{ usuario.telefone }}</td>
+            <td>{{ usuario.data_nascimento.strftime('%d/%m/%Y') }}</td>
         </tr>
         {% endfor %}
     </tbody>

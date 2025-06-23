@@ -6,13 +6,13 @@ from babel.numbers import format_currency
 from starlette.middleware.sessions import SessionMiddleware
 
 from repo.categoria_repo import criar_tabela_categorias, obter_categorias_por_pagina
-from repo.cliente_repo import criar_tabela_clientes, obter_clientes_por_pagina
+from repo.usuario_repo import criar_tabela_usuarios, obter_usuarios_por_pagina
 from repo.endereco_repo import criar_tabela_enderecos, obter_enderecos_por_pagina
 from repo.produto_repo import criar_tabela_produtos, obter_produto_por_id, obter_produtos_por_pagina
 from util.auth import SECRET_KEY, autenticar_usuario
 
 criar_tabela_produtos()
-criar_tabela_clientes()
+criar_tabela_usuarios()
 criar_tabela_categorias()
 criar_tabela_enderecos()
 
@@ -37,10 +37,10 @@ def read_produto(request: Request, id: int):
     response = templates.TemplateResponse("produto.html", {"request": request, "produto": produto})
     return response
 
-@app.get("/clientes")
-def read_clientes(request: Request):
-    clientes = obter_clientes_por_pagina(1, 12)
-    response = templates.TemplateResponse("clientes.html", {"request": request, "clientes": clientes})
+@app.get("/usuarios")
+def read_usuarios(request: Request):
+    usuarios = obter_usuarios_por_pagina(1, 12)
+    response = templates.TemplateResponse("usuarios.html", {"request": request, "usuarios": usuarios})
     return response
 
 @app.get("/produtos")
@@ -76,7 +76,8 @@ async def login(
     usuario_json = {
         "id": usuario.id,
         "nome": usuario.nome,
-        "email": usuario.email
+        "email": usuario.email,
+        "tipo": "admin" if usuario.tipo==1 else "user"
     }
     request.session["usuario"] = usuario_json
     return RedirectResponse(url="/", status_code=303)
