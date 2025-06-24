@@ -121,5 +121,113 @@ async def logout(request: Request):
     request.session.clear()
     return RedirectResponse(url="/", status_code=303)
 
+@app.get("/usuarios/promover/{id}")
+async def promover_usuario(request: Request, id: int):
+    usuario = usuario_repo.obter_usuario_por_id(id)
+    if not usuario:
+        raise HTTPException(status_code=404, detail="Usuário não encontrado")
+    usuario_repo.atualizar_tipo_usuario(id, 1)
+    return RedirectResponse(url="/usuarios", status_code=303)
+
+@app.get("/usuarios/rebaixar/{id}")
+async def promover_usuario(request: Request, id: int):
+    usuario = usuario_repo.obter_usuario_por_id(id)
+    if not usuario:
+        raise HTTPException(status_code=404, detail="Usuário não encontrado")
+    usuario_repo.atualizar_tipo_usuario(id, 0)
+    return RedirectResponse(url="/usuarios", status_code=303)
+
+@app.get("/perfil")
+async def perfil_usuario(request: Request):
+    # Captura os dados do usuário da sessão (logado)
+    usuario_json = request.session.get("usuario")
+    # Se não encontrou um usuário, retorna erro 401
+    if not usuario_json:
+        raise HTTPException(status_code=401, detail="Usuário não autenticado")
+    # Busca os dados do usuário no repositório
+    usuario = usuario_repo.obter_usuario_por_id(usuario_json["id"])
+    # Se não encontrou o usuário, retorna erro 404
+    if not usuario:
+        raise HTTPException(status_code=404, detail="Usuário não encontrado")
+    # Retorna a página de perfil com os dados do usuário
+    return templates.TemplateResponse("perfil.html", {"request": request, "perfil": usuario})
+
+@app.post("/perfil")
+async def atualizar_perfil(
+    request: Request,
+    nome: str = Form(),
+    telefone: str = Form(),
+    email: str = Form(),
+    data_nascimento: str = Form()
+):
+    # Captura os dados do usuário da sessão (logado)
+    usuario_json = request.session.get("usuario")
+    # Se não encontrou um usuário, retorna erro 401
+    if not usuario_json:
+        raise HTTPException(status_code=401, detail="Usuário não autenticado")
+    # Busca os dados do usuário no repositório
+    usuario = usuario_repo.obter_usuario_por_id(usuario_json["id"])
+    # Se não encontrou o usuário, retorna erro 404
+    if not usuario:
+        raise HTTPException(status_code=404, detail="Usuário não encontrado")
+    # Atualiza os dados do usuário
+    usuario.nome = nome
+    usuario.telefone = telefone
+    usuario.email = email
+    usuario.data_nascimento = data_nascimento
+    # Atualiza o usuário no repositório
+    if not usuario_repo.atualizar_usuario(usuario):
+        raise HTTPException(status_code=400, detail="Erro ao atualizar perfil")
+    # Atualiza os dados do usuário na sessão
+    usuario_json = {
+        "id": usuario.id,
+        "nome": usuario.nome,
+        "email": usuario.email,
+        "tipo": "admin" if usuario.tipo==1 else "user"
+    }
+    request.session["usuario"] = usuario_json
+    # Redireciona para a página de perfil
+    return RedirectResponse(url="/perfil", status_code=303)
+
+@app.get("/senha")
+async def senha_usuario(request: Request):
+    # Captura os dados do usuário da sessão (logado)
+    usuario_json = request.session.get("usuario")
+    # Se não encontrou um usuário, retorna erro 401
+    if not usuario_json:
+        raise HTTPException(status_code=401, detail="Usuário não autenticado")
+    # Busca os dados do usuário no repositório
+    usuario = usuario_repo.obter_usuario_por_id(usuario_json["id"])
+    # Se não encontrou o usuário, retorna erro 404
+    if not usuario:
+        raise HTTPException(status_code=404, detail="Usuário não encontrado")
+    # Retorna a página de senha com os dados do usuário
+    return templates.TemplateResponse("senha.html", {"request": request})
+
+@app.post("/senha")
+async def atualizar_senha(
+    request: Request,    
+    nova_senha: str = Form(),
+    conf_nova_senha: str = Form()
+):
+    # Captura os dados do usuário da sessão (logado)
+    usuario_json = request.session.get("usuario")
+    # Se não encontrou um usuário, retorna erro 401
+    if not usuario_json:
+        raise HTTPException(status_code=401, detail="Usuário não autenticado")
+    # Busca os dados do usuário no repositório
+    usuario = usuario_repo.obter_usuario_por_id(usuario_json["id"])
+    # Se não encontrou o usuário, retorna erro 404
+    if not usuario:
+        raise HTTPException(status_code=404, detail="Usuário não encontrado")
+    # Verifica se as senhas conferem
+    if nova_senha != conf_nova_senha:
+        raise HTTPException(status_code=400, detail="As senhas não conferem")
+    # Atualiza a senha do usuário
+    if not usuario_repo.atualizar_senha_usuario(usuario.id, hash_senha(nova_senha)):
+        raise HTTPException(status_code=400, detail="Erro ao atualizar senha")
+    # Redireciona para a página de perfil
+    return RedirectResponse(url="/perfil", status_code=303)
+
 if __name__ == "__main__":
     uvicorn.run(app=app, port=8000, reload=True)

@@ -24,6 +24,18 @@ def atualizar_usuario(usuario: Usuario) -> bool:
         cursor.execute(UPDATE_USUARIO, 
             (usuario.nome, usuario.cpf, usuario.telefone, usuario.email, usuario.data_nascimento, usuario.id))    
         return (cursor.rowcount > 0)
+    
+def atualizar_tipo_usuario(id: int, tipo: int) -> bool:
+    with obter_conexao() as conexao:
+        cursor = conexao.cursor()
+        cursor.execute(UPDATE_TIPO_USUARIO, (tipo, id))
+        return (cursor.rowcount > 0)
+    
+def atualizar_senha_usuario(id: int, senha_hash: str) -> bool:
+    with obter_conexao() as conexao:
+        cursor = conexao.cursor()
+        cursor.execute(UPDATE_SENHA_USUARIO, (senha_hash, id))
+        return (cursor.rowcount > 0)
 
 def excluir_usuario(id: int) -> bool:
     with obter_conexao() as conexao:

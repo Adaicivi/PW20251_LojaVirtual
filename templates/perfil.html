@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% set titulo_pagina = "Dados de Perfil" %}
+{% block conteudo %}
+<form method="post">
+    <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome" required value="{{ perfil.nome if perfil else '' }}">
+        <label for="nome">Nome</label>
+    </div>
+    <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="cpf" name="cpf" placeholder="CPF" disabled value="{{ perfil.cpf if perfil else '' }}">
+        <label for="cpf">CPF</label>
+    </div>
+    <div class="form-floating mb-3">
+        <input type="email" class="form-control" id="email" name="email" placeholder="E-mail" required value="{{ perfil.email if perfil else '' }}">
+        <label for="email">E-mail</label>
+    </div>
+    <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="telefone" name="telefone" placeholder="Telefone" required value="{{ perfil.telefone if perfil else '' }}">
+        <label for="telefone">Telefone</label>
+    </div>
+    <div class="form-floating mb-3">
+        <input type="date" class="form-control" id="data_nascimento" name="data_nascimento" placeholder="Data de Nascimento" required value="{{ perfil.data_nascimento if perfil else '' }}">
+        <label for="data_nascimento">Data de Nascimento</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Salvar</button>
+</form>
+{% endblock %}

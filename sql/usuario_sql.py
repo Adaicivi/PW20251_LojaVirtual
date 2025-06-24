@@ -27,6 +27,12 @@ SET tipo = ?
 WHERE id = ?;
 """
 
+UPDATE_SENHA_USUARIO = """
+UPDATE Usuario
+SET senha_hash = ?
+WHERE id = ?;
+"""
+
 DELETE_USUARIO = """
 DELETE FROM Usuario
 WHERE id = ?;
