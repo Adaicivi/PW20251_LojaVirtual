@@ -1,10 +1,17 @@
 from dataclasses import dataclass
+import datetime
 from typing import Optional
 
 
 @dataclass
 class Usuario:
-    id: Optional[int]
+    id: int
     nome: str
-    email: str
-    senha_hash: Optional[str]
+    cpf: str
+    telefone: str
+    email: str    
+    data_nascimento: datetime
+    senha_hash: Optional[str] = None
+    tipo: int = 0
+
+    

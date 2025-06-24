@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% set titulo_pagina = "Identifique-se" %}
+{% block conteudo %}
+<form action="/categorias/alterar/{{ categoria.id }}" method="post">
+    <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome" value="{{ categoria.nome }}" required>
+        <label for="nome">Nome</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Alterar</button>
+</form>
+{% endblock %}

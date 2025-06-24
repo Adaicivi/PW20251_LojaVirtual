@@ -3,7 +3,7 @@ from fastapi import HTTPException, Request
 import hashlib
 
 from models.usuario import Usuario
-from repo import cliente_repo
+from repo import usuario_repo
 
 SECRET_KEY="cae3def7c5c8f5c07613a742c1c5435076ccf0777c259796ad1653c0fd5dfdd7"
 
@@ -14,7 +14,7 @@ def verificar_senha(senha_normal: str, senha_hashed: str) -> bool:
     return hash_senha(senha_normal) == senha_hashed
 
 def autenticar_usuario(email: str, senha: str):
-    usuario = cliente_repo.obter_cliente_por_email(email)
+    usuario = usuario_repo.obter_usuario_por_email(email)
     if not usuario or not verificar_senha(senha, usuario.senha_hash):
         return None
     return usuario

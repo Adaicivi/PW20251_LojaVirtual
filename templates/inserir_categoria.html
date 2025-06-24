@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% set titulo_pagina = "Identifique-se" %}
+{% block conteudo %}
+<form action="/categorias/inserir" method="post">
+    <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome" required>
+        <label for="nome">Nome</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Cadastrar</button>
+</form>
+{% endblock %}

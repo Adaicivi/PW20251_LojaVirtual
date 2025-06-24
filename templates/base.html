@@ -42,20 +42,33 @@
                 <div class="collapse navbar-collapse justify-content-between" id="mainMenu">
                     <div class="navbar-nav">
                         <a class="nav-link active" href="/">Home</a>
-                        <a class="nav-link" href="/produtos">Produtos</a>
-                        <a class="nav-link" href="/categorias">Categorias</a>
-                        <a class="nav-link" href="/clientes">Clientes</a>
-                        <a class="nav-link" href="/enderecos">Endereços</a>
                         <a class="nav-link" href="/sobre">Sobre</a>
                     </div>
                     <div class="navbar-nav">
                         {% if usuario %}
-                        <span class="navbar-text text-white">
-                            Olá, {{ usuario.nome }}!
-                        </span>
-                        <a class="nav-link" href="/logout">Logout</a>
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            {{ usuario.nome if usuario else "Usuário" }}
+                        </a>
+                        <li class="nav-item dropdown">
+                            <ul class="dropdown-menu dropdown-menu-end text-end">
+                                {% if usuario.tipo == "admin" %}
+                                <li><a class="dropdown-item" href="/produtos">Produtos</a></li>
+                                <li><a class="dropdown-item" href="/categorias">Categorias</a></li>
+                                <li><a class="dropdown-item" href="/usuarios">Usuários</a></li>
+                                <li><a class="dropdown-item" href="/enderecos">Endereços</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                {% endif %}
+                                <li><a class="dropdown-item" href="/perfil">Perfil</a></li>
+                                <li><a class="dropdown-item" href="/senha">Alterar Senha</a></li>
+                                <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                            </ul>
+                        </li>
                         {% else %}
                         <a class="nav-link" href="/login">Login</a>
+                        <a class="nav-link" href="/cadastrar">Cadastrar</a>
                         {% endif %}
                     </div>
                 </div>
@@ -63,9 +76,12 @@
         </nav>
     </header>
     <main class="container my-3">
-        <h1 class="display-6">
-            {{ titulo_pagina|safe if titulo_pagina else "Título Indefinido" }}
-        </h1>
+        <div class="d-flex justify-content-between align-items-center">
+            <h1 class="display-6">
+                {{ titulo_pagina|safe if titulo_pagina else "Título Indefinido" }}
+            </h1>
+            <a href="{{ url_inserir }}" class="btn btn-primary">Inserir</a>
+        </div>
         <hr>
         {% block conteudo %}
         {% endblock %}

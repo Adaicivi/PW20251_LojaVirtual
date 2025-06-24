@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% set titulo_pagina = "Alteração de Senha" %}
+{% block conteudo %}
+<form action="/senha" method="post">
+    <div class="form-floating mb-3">
+        <input type="password" class="form-control" id="nova_senha" name="nova_senha" placeholder="Nova Senha" required>
+        <label for="nova_senha">Nova Senha</label>
+    </div>
+    <div class="form-floating mb-3">
+        <input type="password" class="form-control" id="conf_nova_senha" name="conf_nova_senha" placeholder="Confirme a Nova Senha" required>
+        <label for="conf_nova_senha">Confirme a Nova Senha</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Alterar Senha</button>
+</form>
+{% endblock %}

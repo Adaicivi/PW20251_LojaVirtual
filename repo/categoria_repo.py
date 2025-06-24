@@ -13,7 +13,7 @@ def inserir_categoria(categoria: Categoria) -> Categoria:
     with obter_conexao() as conexao:
         cursor = conexao.cursor()
         cursor.execute(INSERT_CATEGORIA, 
-            (categoria.nome))
+            (categoria.nome,))
         categoria.id = cursor.lastrowid
         return categoria
 
