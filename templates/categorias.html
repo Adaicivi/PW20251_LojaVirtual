@@ -1,11 +1,13 @@
 {% extends "base.html" %}
 {% set titulo_pagina = "Categorias" %}
+{% set url_inserir = "/categorias/inserir" %}
 {% block conteudo %}
 <table class="table table-striped align-middle">
     <thead>
         <tr>
             <th>Id</th>
             <th>Nome</th>
+            <th class="text-center">Ações</th>
         </tr>
     </thead>
     <tbody>
@@ -13,6 +15,14 @@
         <tr>
             <td>{{ categoria.id }}</td>
             <td>{{ categoria.nome }}</td>
+            <td class="text-center">
+                <a href="/categorias/alterar/{{ categoria.id }}" class="btn btn-success">
+                    <i class="bi-pen"></i>
+                </a>
+                <a href="/categorias/excluir/{{ categoria.id }}" class="btn btn-danger">
+                    <i class="bi-trash"></i>
+                </a>
+            </td>
         </tr>
         {% endfor %}
     </tbody>

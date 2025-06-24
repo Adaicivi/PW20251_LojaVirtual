@@ -5,8 +5,10 @@ from fastapi.templating import Jinja2Templates
 from babel.numbers import format_currency
 from starlette.middleware.sessions import SessionMiddleware
 
+from models.categoria import Categoria
 from models.usuario import Usuario
 from repo import usuario_repo
+from repo import categoria_repo
 from repo.categoria_repo import criar_tabela_categorias, obter_categorias_por_pagina
 from repo.usuario_repo import criar_tabela_usuarios, obter_usuarios_por_pagina
 from repo.endereco_repo import criar_tabela_enderecos, obter_enderecos_por_pagina
@@ -228,6 +230,57 @@ async def atualizar_senha(
         raise HTTPException(status_code=400, detail="Erro ao atualizar senha")
     # Redireciona para a página de perfil
     return RedirectResponse(url="/perfil", status_code=303)
+
+@app.get("/categorias/inserir")
+async def inserir_categoria(request: Request):
+    return templates.TemplateResponse("inserir_categoria.html", {"request": request})
+
+@app.post("/categorias/inserir")
+async def inserir_categoria_post(
+    request: Request,
+    nome: str = Form()
+):
+    if not nome:
+        raise HTTPException(status_code=400, detail="Nome é obrigatório")
+    
+    categoria = Categoria(0, nome)
+    if not categoria_repo.inserir_categoria(categoria):
+        raise HTTPException(status_code=400, detail="Erro ao inserir categoria")
+    
+    return RedirectResponse(url="/categorias", status_code=303)
+
+@app.get("/categorias/alterar/{id}")
+async def alterar_categoria(request: Request, id: int):
+    categoria = categoria_repo.obter_categoria_por_id(id)
+    if not categoria:
+        raise HTTPException(status_code=404, detail="Categoria não encontrada")
+    return templates.TemplateResponse("alterar_categoria.html", {"request": request, "categoria": categoria})
+
+@app.post("/categorias/alterar/{id}")
+async def alterar_categoria_post(
+    request: Request,
+    id: int,
+    nome: str = Form()
+):
+    if not nome:
+        raise HTTPException(status_code=400, detail="Nome é obrigatório")
+    
+    categoria = Categoria(id, nome)
+    if not categoria_repo.atualizar_categoria(categoria):
+        raise HTTPException(status_code=400, detail="Erro ao atualizar categoria")
+    
+    return RedirectResponse(url="/categorias", status_code=303)
+
+@app.get("/categorias/excluir/{id}")
+async def excluir_categoria(request: Request, id: int):
+    categoria = categoria_repo.obter_categoria_por_id(id)
+    if not categoria:
+        raise HTTPException(status_code=404, detail="Categoria não encontrada")
+    
+    if not categoria_repo.excluir_categoria(id):
+        raise HTTPException(status_code=400, detail="Erro ao excluir categoria")
+    
+    return RedirectResponse(url="/categorias", status_code=303)
 
 if __name__ == "__main__":
     uvicorn.run(app=app, port=8000, reload=True)
