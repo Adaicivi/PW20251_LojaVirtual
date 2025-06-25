@@ -4,18 +4,21 @@ from sql.categoria_sql import *
 from models.categoria import Categoria
 
 def criar_tabela_categorias() -> bool:
-    with obter_conexao() as conexao:
-        cursor = conexao.cursor()
-        cursor.execute(CREATE_TABLE_CATEGORIA)
-        return (cursor.rowcount > 0)
+    try:
+        with obter_conexao() as conexao:
+            cursor = conexao.cursor()
+            cursor.execute(CREATE_TABLE_CATEGORIA)
+            return True
+    except Exception as e:
+        print(f"Erro ao criar tabela de categorias: {e}")
+        return False
 
-def inserir_categoria(categoria: Categoria) -> Categoria:
+def inserir_categoria(categoria: Categoria) -> Optional[int]:
     with obter_conexao() as conexao:
         cursor = conexao.cursor()
         cursor.execute(INSERT_CATEGORIA, 
             (categoria.nome,))
-        categoria.id = cursor.lastrowid
-        return categoria
+        return cursor.lastrowid
 
 def atualizar_categoria(categoria: Categoria) -> bool:
     with obter_conexao() as conexao:

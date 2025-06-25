@@ -4,10 +4,14 @@ from sql.endereco_sql import *
 from models.endereco import Endereco
 
 def criar_tabela_enderecos() -> bool:
-    with obter_conexao() as conexao:
-        cursor = conexao.cursor()
-        cursor.execute(CREATE_TABLE_ENDERECO)
-        return (cursor.rowcount > 0)
+    try:
+        with obter_conexao() as conexao:
+            cursor = conexao.cursor()
+            cursor.execute(CREATE_TABLE_ENDERECO)
+            return True
+    except Exception as e:
+        print(f"Erro ao criar tabela de endereços: {e}")
+        return False
 
 def inserir_endereco(endereco: Endereco) -> Endereco:
     with obter_conexao() as conexao:

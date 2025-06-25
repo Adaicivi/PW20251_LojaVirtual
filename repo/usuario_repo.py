@@ -5,18 +5,21 @@ from sql.usuario_sql import *
 from models.usuario import Usuario
 
 def criar_tabela_usuarios() -> bool:
-    with obter_conexao() as conexao:
-        cursor = conexao.cursor()
-        cursor.execute(CREATE_TABLE_USUARIO)        
-        return (cursor.rowcount > 0)
+    try:
+        with obter_conexao() as conexao:
+            cursor = conexao.cursor()
+            cursor.execute(CREATE_TABLE_USUARIO)
+            return True
+    except Exception as e:
+        print(f"Erro ao criar tabela de usuários: {e}")
+        return False
 
-def inserir_usuario(usuario: Usuario) -> Usuario:    
+def inserir_usuario(usuario: Usuario) -> Optional[int]:
     with obter_conexao() as conexao:
         cursor = conexao.cursor()
         cursor.execute(INSERT_USUARIO, 
             (usuario.nome, usuario.cpf, usuario.telefone, usuario.email, usuario.data_nascimento, usuario.senha_hash))
-        usuario.id = cursor.lastrowid
-        return usuario
+        return cursor.lastrowid        
 
 def atualizar_usuario(usuario: Usuario) -> bool:
     with obter_conexao() as conexao:
