@@ -12,8 +12,6 @@ def criar_tabela_enderecos() -> bool:
             cursor = conexao.cursor()
             # Executa comando SQL para criar tabela de endereços
             cursor.execute(CREATE_TABLE_ENDERECO)
-            # Insere dados iniciais na tabela se necessário
-            inserir_dados_iniciais(conexao)
             # Retorna True indicando sucesso
             return True
     except Exception as e:
@@ -123,7 +121,7 @@ def inserir_dados_iniciais(conexao):
         return
     # Se não houver endereços, insere os dados iniciais    
     # Constrói caminho para arquivo SQL com dados iniciais
-    caminho_arquivo_sql = os.path.join(os.path.dirname(__file__), '../data/insert_enderecos.sql')
+    caminho_arquivo_sql = os.path.join(os.path.dirname(__file__), './data/insert_enderecos.sql')
     # Abre arquivo SQL para leitura
     with open(caminho_arquivo_sql, 'r', encoding='utf-8') as arquivo:
         # Lê conteúdo do arquivo SQL

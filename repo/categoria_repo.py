@@ -13,8 +13,6 @@ def criar_tabela_categorias() -> bool:
             cursor = conexao.cursor()
             # Executa comando SQL para criar tabela de categorias
             cursor.execute(CREATE_TABLE_CATEGORIA)
-            # Insere dados iniciais na tabela se necessário
-            inserir_dados_iniciais(conexao)
             # Retorna True indicando sucesso
             return True
     except Exception as e:
@@ -100,7 +98,7 @@ def inserir_dados_iniciais(conexao: Connection):
         return
     # Se não houver categorias, insere os dados iniciais    
     # Constrói caminho para arquivo SQL com dados iniciais
-    caminho_arquivo_sql = os.path.join(os.path.dirname(__file__), '../data/insert_categorias.sql')
+    caminho_arquivo_sql = os.path.join(os.path.dirname(__file__), './data/insert_categorias.sql')
     # Abre arquivo SQL para leitura
     with open(caminho_arquivo_sql, 'r', encoding='utf-8') as arquivo:
         # Lê conteúdo do arquivo SQL

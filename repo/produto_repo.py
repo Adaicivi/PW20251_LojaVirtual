@@ -13,8 +13,6 @@ def criar_tabela_produtos() -> bool:
             cursor = conexao.cursor()
             # Executa comando SQL para criar tabela de produtos
             cursor.execute(CREATE_TABLE_PRODUTO)
-            # Insere dados iniciais na tabela se necessário
-            inserir_dados_iniciais(conexao)
             # Retorna True indicando sucesso
             return True
     except Exception as e:
@@ -121,7 +119,7 @@ def inserir_dados_iniciais(conexao):
         return
     # Se não houver produtos, insere os dados iniciais    
     # Constrói caminho para arquivo SQL com dados iniciais
-    caminho_arquivo_sql = os.path.join(os.path.dirname(__file__), '../data/insert_produtos.sql')
+    caminho_arquivo_sql = os.path.join(os.path.dirname(__file__), './data/insert_produtos.sql')
     # Abre arquivo SQL para leitura
     with open(caminho_arquivo_sql, 'r', encoding='utf-8') as arquivo:
         # Lê conteúdo do arquivo SQL
