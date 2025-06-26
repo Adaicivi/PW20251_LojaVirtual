@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Optional
 
 
 @dataclass
@@ -11,3 +12,4 @@ class Endereco:
     cidade: str
     estado: str
     cep: str
+    id_usuario: int

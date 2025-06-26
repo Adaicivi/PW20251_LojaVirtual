@@ -5,18 +5,20 @@ CREATE TABLE IF NOT EXISTS Produto (
     descricao TEXT NOT NULL,
     preco REAL NOT NULL,
     estoque INTEGER NOT NULL,
-    imagem TEXT NOT NULL
+    imagem TEXT NOT NULL,
+    id_categoria INTEGER NOT NULL,
+    FOREIGN KEY (id_categoria) REFERENCES Categoria(id)
 );
 """
 
 INSERT_PRODUTO = """
-INSERT INTO Produto (nome, descricao, preco, estoque, imagem) 
-VALUES (?, ?, ?, ?, ?);
+INSERT INTO Produto (nome, descricao, preco, estoque, imagem, id_categoria) 
+VALUES (?, ?, ?, ?, ?, ?);
 """
 
 UPDATE_PRODUTO = """
 UPDATE Produto 
-SET nome = ?, descricao = ?, preco = ?, estoque = ?, imagem = ?
+SET nome = ?, descricao = ?, preco = ?, estoque = ?, imagem = ?, id_categoria = ?
 WHERE id = ?;
 """
 
@@ -26,14 +28,32 @@ WHERE id = ?;
 """
 
 GET_PRODUTO_BY_ID = """
-SELECT id, nome, descricao, preco, estoque, imagem
-FROM Produto
-WHERE id = ?;
+SELECT 
+    p.id, 
+    p.nome, 
+    p.descricao, 
+    p.preco, 
+    p.estoque, 
+    p.imagem, 
+    p.id_categoria, 
+    c.nome AS nome_categoria
+FROM Produto p
+INNER JOIN Categoria c ON p.id_categoria = c.id
+WHERE p.id = ?;
 """
 
 GET_PRODUTOS_BY_PAGE = """
-SELECT id, nome, descricao, preco, estoque, imagem
-FROM Produto 
-ORDER BY nome ASC
+SELECT 
+    p.id, 
+    p.nome, 
+    p.descricao, 
+    p.preco, 
+    p.estoque, 
+    p.imagem, 
+    p.id_categoria, 
+    c.nome AS nome_categoria
+FROM Produto p
+INNER JOIN Categoria c ON p.id_categoria = c.id
+ORDER BY p.nome ASC
 LIMIT ? OFFSET ?;
 """

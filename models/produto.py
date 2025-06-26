@@ -1,4 +1,7 @@
 from dataclasses import dataclass
+from typing import Optional
+
+from models.categoria import Categoria
 
 @dataclass
 class Produto:
@@ -8,3 +11,5 @@ class Produto:
     preco: float
     estoque: int
     imagem: str
+    id_categoria: int
+    categoria: Optional[Categoria] = None

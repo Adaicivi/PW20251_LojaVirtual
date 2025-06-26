@@ -39,7 +39,7 @@ WHERE id = ?;
 """
 
 GET_USUARIO_BY_ID = """
-SELECT id, nome, cpf, telefone, email, data_nascimento, tipo
+SELECT id, nome, cpf, telefone, email, data_nascimento, senha_hash, tipo
 FROM Usuario
 WHERE id = ?;
 """

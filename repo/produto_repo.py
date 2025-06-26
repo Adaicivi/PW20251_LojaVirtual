@@ -1,5 +1,6 @@
 from typing import Optional
 from data.database import obter_conexao
+from models.categoria import Categoria
 from sql.produto_sql import *
 from models.produto import Produto
 
@@ -13,19 +14,18 @@ def criar_tabela_produtos() -> bool:
         print(f"Erro ao criar tabela de produtos: {e}")
         return False
     
-def inserir_produto(produto: Produto) -> Produto:
+def inserir_produto(produto: Produto) -> Optional[int]:
     with obter_conexao() as conexao:
         cursor = conexao.cursor()
         cursor.execute(INSERT_PRODUTO, 
-            (produto.nome, produto.descricao, produto.preco, produto.estoque, produto.imagem))
-        produto.id = cursor.lastrowid
-        return produto
+            (produto.nome, produto.descricao, produto.preco, produto.estoque, produto.imagem, produto.id_categoria))
+        return cursor.lastrowid
 
 def atualizar_produto(produto: Produto) -> bool:
     with obter_conexao() as conexao:
         cursor = conexao.cursor()
         cursor.execute(UPDATE_PRODUTO, 
-            (produto.nome, produto.descricao, produto.preco, produto.estoque, produto.imagem, produto.id))
+            (produto.nome, produto.descricao, produto.preco, produto.estoque, produto.imagem, produto.id_categoria, produto.id))
         return (cursor.rowcount > 0)
 
 def excluir_produto(id: int) -> bool:
@@ -46,7 +46,12 @@ def obter_produto_por_id(id: int) -> Optional[Produto]:
                 descricao=resultado["descricao"],
                 preco=resultado["preco"],
                 estoque=resultado["estoque"],
-                imagem=resultado["imagem"]
+                imagem=resultado["imagem"],
+                id_categoria=resultado["id_categoria"],
+                categoria=Categoria(
+                    id=resultado["id_categoria"],
+                    nome=resultado["nome_categoria"]
+                )
             )
     return None
 
@@ -63,5 +68,10 @@ def obter_produtos_por_pagina(numero_pagina: int, tamanho_pagina: int) -> list[P
             descricao=resultado["descricao"],
             preco=resultado["preco"],
             estoque=resultado["estoque"],
-            imagem=resultado["imagem"]
+            imagem=resultado["imagem"],
+            id_categoria=resultado["id_categoria"],
+            categoria=Categoria(
+                id=resultado["id_categoria"],
+                nome=resultado["nome_categoria"]
+            )
         ) for resultado in resultados]

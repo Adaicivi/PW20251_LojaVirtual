@@ -59,6 +59,7 @@ def obter_usuario_por_id(id: int) -> Optional[Usuario]:
                 telefone=resultado["telefone"],
                 email=resultado["email"],
                 data_nascimento=datetime.strptime(resultado["data_nascimento"], "%Y-%m-%d").date(),
+                senha_hash=resultado["senha_hash"],
                 tipo=resultado["tipo"])
     return None
 
