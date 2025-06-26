@@ -1,5 +1,6 @@
+import os
 from typing import Optional
-from data.database import obter_conexao
+from util.database import obter_conexao
 from models.categoria import Categoria
 from sql.produto_sql import *
 from models.produto import Produto
@@ -9,6 +10,7 @@ def criar_tabela_produtos() -> bool:
         with obter_conexao() as conexao:
             cursor = conexao.cursor()
             cursor.execute(CREATE_TABLE_PRODUTO)
+            inserir_dados_iniciais(conexao)
             return True
     except Exception as e:
         print(f"Erro ao criar tabela de produtos: {e}")
@@ -75,3 +77,14 @@ def obter_produtos_por_pagina(numero_pagina: int, tamanho_pagina: int) -> list[P
                 nome=resultado["nome_categoria"]
             )
         ) for resultado in resultados]
+    
+def inserir_dados_iniciais(conexao):
+    # Verifica se já existem produtos na tabela
+    lista = obter_produtos_por_pagina(1, 5)
+    if lista: 
+        return
+    # Se não houver produtos, insere os dados iniciais    
+    caminho_arquivo_sql = os.path.join(os.path.dirname(__file__), '../data/insert_produtos.sql')
+    with open(caminho_arquivo_sql, 'r', encoding='utf-8') as arquivo:
+        sql_inserts = arquivo.read()
+        conexao.execute(sql_inserts)

@@ -25,5 +25,4 @@ def obter_usuario_logado(request: Request) -> Optional[Usuario]:
         raise HTTPException(status_code=401, detail="Não autenticado")
     return usuario
 
-
 print("Senha do usuário:", hash_senha("123456"))

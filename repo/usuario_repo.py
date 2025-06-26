@@ -1,6 +1,7 @@
 from datetime import datetime
+import os
 from typing import Optional
-from data.database import obter_conexao
+from util.database import obter_conexao
 from sql.usuario_sql import *
 from models.usuario import Usuario
 
@@ -9,6 +10,7 @@ def criar_tabela_usuarios() -> bool:
         with obter_conexao() as conexao:
             cursor = conexao.cursor()
             cursor.execute(CREATE_TABLE_USUARIO)
+            inserir_dados_iniciais(conexao)
             return True
     except Exception as e:
         print(f"Erro ao criar tabela de usuários: {e}")
@@ -96,3 +98,14 @@ def obter_usuarios_por_pagina(numero_pagina: int, tamanho_pagina: int) -> list[U
             data_nascimento=datetime.strptime(resultado["data_nascimento"], "%Y-%m-%d").date(),
             tipo=resultado["tipo"]
         ) for resultado in resultados]
+    
+def inserir_dados_iniciais(conexao):
+    # Verifica se já existem usuários na tabela
+    lista = obter_usuarios_por_pagina(1, 5)
+    if lista: 
+        return
+    # Se não houver usuários, insere os dados iniciais    
+    caminho_arquivo_sql = os.path.join(os.path.dirname(__file__), '../data/insert_usuarios.sql')
+    with open(caminho_arquivo_sql, 'r', encoding='utf-8') as arquivo:
+        sql_inserts = arquivo.read()
+        conexao.execute(sql_inserts)
