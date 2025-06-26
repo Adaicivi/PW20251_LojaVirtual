@@ -8,17 +8,13 @@ from starlette.middleware.sessions import SessionMiddleware
 from models.categoria import Categoria
 from models.usuario import Usuario
 from repo import usuario_repo, endereco_repo, categoria_repo, produto_repo
+from util import initializer
 from util.auth import SECRET_KEY, autenticar_usuario, hash_senha
 
 # Cria as tabelas no banco de dados se não existirem
-usuario_repo.criar_tabela_usuarios()
-usuario_repo.inserir_dados_iniciais()
-endereco_repo.criar_tabela_enderecos()
-endereco_repo.inserir_dados_iniciais()
-categoria_repo.criar_tabela_categorias()
-categoria_repo.inserir_dados_iniciais()
-produto_repo.criar_tabela_produtos()
-produto_repo.inserir_dados_iniciais()
+initializer.criar_tabelas()
+# Insere dados iniciais no banco de dados
+initializer.inserir_dados_iniciais()
 
 # Cria a instância do FastAPI para a aplicacão web
 app = FastAPI()
