@@ -111,13 +111,14 @@ def obter_produtos_por_pagina(numero_pagina: int, tamanho_pagina: int) -> list[P
             )
         ) for resultado in resultados]
     
-def inserir_dados_iniciais(conexao):
+def inserir_dados_iniciais():
     # Verifica se já existem produtos na tabela
     lista = obter_produtos_por_pagina(1, 5)
     # Se já houver produtos, não faz nada
     if lista: 
         return
-    # Se não houver produtos, insere os dados iniciais    
+    # Se não houver produtos, cria uma nova conexão
+    conexao = obter_conexao()
     # Constrói caminho para arquivo SQL com dados iniciais
     caminho_arquivo_sql = os.path.join(os.path.dirname(__file__), './data/insert_produtos.sql')
     # Abre arquivo SQL para leitura

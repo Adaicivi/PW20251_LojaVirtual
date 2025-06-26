@@ -148,13 +148,14 @@ def obter_usuarios_por_pagina(numero_pagina: int, tamanho_pagina: int) -> list[U
             tipo=resultado["tipo"]
         ) for resultado in resultados]
     
-def inserir_dados_iniciais(conexao):
+def inserir_dados_iniciais():
     # Verifica se já existem usuários na tabela
     lista = obter_usuarios_por_pagina(1, 5)
     # Se já houver usuários, não faz nada
     if lista: 
         return
-    # Se não houver usuários, insere os dados iniciais    
+    # Se não houver usuários, cria uma nova conexao
+    conexao = obter_conexao()
     # Constrói caminho para arquivo SQL com dados iniciais
     caminho_arquivo_sql = os.path.join(os.path.dirname(__file__), './data/insert_usuarios.sql')
     # Abre arquivo SQL para leitura

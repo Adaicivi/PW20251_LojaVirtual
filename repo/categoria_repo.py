@@ -90,13 +90,14 @@ def obter_categorias_por_pagina(numero_pagina: int, tamanho_pagina: int) -> list
             nome=resultado["nome"])
             for resultado in resultados]
     
-def inserir_dados_iniciais(conexao: Connection):
+def inserir_dados_iniciais():
     # Verifica se já existem categorias na tabela
     lista = obter_categorias_por_pagina(1, 5)
     # Se já houver categorias, não faz nada
     if lista: 
         return
-    # Se não houver categorias, insere os dados iniciais    
+    # Se não houver categorias, cria uma nova conexão
+    conexao = obter_conexao()
     # Constrói caminho para arquivo SQL com dados iniciais
     caminho_arquivo_sql = os.path.join(os.path.dirname(__file__), './data/insert_categorias.sql')
     # Abre arquivo SQL para leitura

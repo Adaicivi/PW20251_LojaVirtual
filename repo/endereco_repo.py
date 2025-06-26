@@ -113,13 +113,14 @@ def obter_enderecos_por_usuario(id_usuario: int) -> list[Endereco]:
             id_usuario=resultado["id_usuario"]
         ) for resultado in resultados]
     
-def inserir_dados_iniciais(conexao):
+def inserir_dados_iniciais():
     # Verifica se já existem endereços na tabela
     lista = obter_enderecos_por_usuario(1)
     # Se já houver endereços, não faz nada
     if lista: 
         return
-    # Se não houver endereços, insere os dados iniciais    
+    # Se não houver endereços, cria uma nova conexão
+    conexao = obter_conexao()
     # Constrói caminho para arquivo SQL com dados iniciais
     caminho_arquivo_sql = os.path.join(os.path.dirname(__file__), './data/insert_enderecos.sql')
     # Abre arquivo SQL para leitura
