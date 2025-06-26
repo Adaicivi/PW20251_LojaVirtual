@@ -128,4 +128,4 @@ class TestEnderecoRepo:
         # Act: tenta obter endereços de um usuário inexistente
         enderecos_obtidos = endereco_repo.obter_enderecos_por_usuario(999)
         # Assert: verifica se o resultado é uma lista vazia
-        assert len(enderecos_obtidos) == 0, "Deveria retornar uma lista vazia para usuário inexistente"    
+        assert len(enderecos_obtidos) == 0, "Deveria retornar uma lista vazia para usuário inexistente"

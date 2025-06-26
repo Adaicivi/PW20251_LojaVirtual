@@ -1,5 +1,6 @@
 from datetime import datetime
 import os
+from sqlite3 import Cursor
 from typing import Optional
 from util.database import obter_conexao
 from sql.usuario_sql import *
@@ -148,19 +149,21 @@ def obter_usuarios_por_pagina(numero_pagina: int, tamanho_pagina: int) -> list[U
             tipo=resultado["tipo"]
         ) for resultado in resultados]
     
-def inserir_dados_iniciais():
+def inserir_dados_iniciais() -> None:
     # Verifica se já existem usuários na tabela
     lista = obter_usuarios_por_pagina(1, 5)
     # Se já houver usuários, não faz nada
     if lista: 
         return
-    # Se não houver usuários, cria uma nova conexao
-    conexao = obter_conexao()
     # Constrói caminho para arquivo SQL com dados iniciais
-    caminho_arquivo_sql = os.path.join(os.path.dirname(__file__), './data/insert_usuarios.sql')
+    caminho_arquivo_sql = os.path.join(os.path.dirname(__file__), '../data/insert_usuarios.sql')
     # Abre arquivo SQL para leitura
     with open(caminho_arquivo_sql, 'r', encoding='utf-8') as arquivo:
         # Lê conteúdo do arquivo SQL
         sql_inserts = arquivo.read()
+        # Cria conexao com o banco de dados
+        conexao = obter_conexao()
         # Executa comandos SQL de inserção
         conexao.execute(sql_inserts)
+        # Fecha a conexão
+        conexao.close()

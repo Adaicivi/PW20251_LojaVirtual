@@ -1,4 +1,5 @@
 import os
+from sqlite3 import Cursor
 from typing import Optional
 from util.database import obter_conexao
 from models.categoria import Categoria
@@ -111,19 +112,21 @@ def obter_produtos_por_pagina(numero_pagina: int, tamanho_pagina: int) -> list[P
             )
         ) for resultado in resultados]
     
-def inserir_dados_iniciais():
+def inserir_dados_iniciais() -> None:
     # Verifica se já existem produtos na tabela
     lista = obter_produtos_por_pagina(1, 5)
     # Se já houver produtos, não faz nada
     if lista: 
         return
-    # Se não houver produtos, cria uma nova conexão
-    conexao = obter_conexao()
     # Constrói caminho para arquivo SQL com dados iniciais
-    caminho_arquivo_sql = os.path.join(os.path.dirname(__file__), './data/insert_produtos.sql')
+    caminho_arquivo_sql = os.path.join(os.path.dirname(__file__), '../data/insert_produtos.sql')
     # Abre arquivo SQL para leitura
     with open(caminho_arquivo_sql, 'r', encoding='utf-8') as arquivo:
         # Lê conteúdo do arquivo SQL
         sql_inserts = arquivo.read()
+        # Cria conexao com o banco de dados
+        conexao = obter_conexao()
         # Executa comandos SQL de inserção
         conexao.execute(sql_inserts)
+        # Fecha a conexão
+        conexao.close()

@@ -1,5 +1,5 @@
 import os
-from sqlite3 import Connection
+from sqlite3 import Cursor
 from typing import Optional
 from util.database import obter_conexao
 from sql.categoria_sql import *
@@ -90,23 +90,21 @@ def obter_categorias_por_pagina(numero_pagina: int, tamanho_pagina: int) -> list
             nome=resultado["nome"])
             for resultado in resultados]
     
-def inserir_dados_iniciais():
+def inserir_dados_iniciais() -> None:
     # Verifica se já existem categorias na tabela
     lista = obter_categorias_por_pagina(1, 5)
     # Se já houver categorias, não faz nada
     if lista: 
         return
-    # Se não houver categorias, cria uma nova conexão
-    conexao = obter_conexao()
     # Constrói caminho para arquivo SQL com dados iniciais
-    caminho_arquivo_sql = os.path.join(os.path.dirname(__file__), './data/insert_categorias.sql')
+    caminho_arquivo_sql = os.path.join(os.path.dirname(__file__), '../data/insert_categorias.sql')
     # Abre arquivo SQL para leitura
     with open(caminho_arquivo_sql, 'r', encoding='utf-8') as arquivo:
         # Lê conteúdo do arquivo SQL
         sql_inserts = arquivo.read()
+        # Cria conexao com o banco de dados
+        conexao = obter_conexao()
         # Executa comandos SQL de inserção
-        conexao.execute(sql_inserts)    
-        # Confirma transação no banco
-        conexao.commit()
-        # Fecha conexão com banco de dados
+        conexao.execute(sql_inserts)
+        # Fecha a conexão
         conexao.close()
