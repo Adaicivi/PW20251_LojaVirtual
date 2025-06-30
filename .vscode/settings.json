@@ -1,0 +1,32 @@
+{
+    // Configurações do Python
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestArgs": [
+        "tests",
+        "-v",
+        "--tb=short",
+        "--no-header",
+        "--no-summary",
+        "-q"
+    ],
+    
+    // Descoberta automática de testes
+    "python.testing.autoTestDiscoverOnSaveEnabled": true,
+    
+    // Configuração do terminal de teste
+    "python.testing.promptToConfigure": false,
+    
+    // Formato de saída mais limpo
+    "python.testing.cwd": "${workspaceFolder}",
+    
+    // Extensões recomendadas para melhor experiência
+    "extensions.ignoreRecommendations": false,
+    
+    // Configurações adicionais para melhor visualização
+    "python.testing.debugPort": 5678,
+    "python.testing.showAllTests": true,
+    
+    // Formato de saída personalizado
+    "python.terminal.activateEnvironment": true
+}

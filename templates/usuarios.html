@@ -31,7 +31,9 @@
                 <a href="/usuarios/rebaixar/{{usuario.id}}" class="btn btn-danger" title="Rebaixar para Usuário Comum">
                     <i class="bi-arrow-down"></i>
                 </a>
-                {% endif %}
+                {% endif %}                
+                <a href="/enderecos/{{usuario.id}}" class="btn btn-secondary" title="Gerenciar Endereços">
+                    <i class="bi-house"></i>
             </td>
         </tr>
         {% endfor %}

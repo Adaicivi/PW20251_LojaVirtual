@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 *.so
+.pytest_cache/
 
 # Distribution / packaging
 dist/
@@ -46,5 +47,6 @@ logs/
 *.swp
 *.swo
 
-*.md
+codebase.md
+CLAUDE.md
 .aidigestignore
